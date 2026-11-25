@@ -1,0 +1,19 @@
+{
+  "name": "meridian-arcade",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A static browser-games site in the Meridian style, powered by GamePix's embed feed.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "npx serve dist",
+    "test:e2e": "npm i --no-save playwright && npx playwright install chromium && node scripts/build.mjs && node tests/e2e.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.4.0",
+    "tailwindcss": "^4.0.0"
+  }
+}
