@@ -83,10 +83,11 @@ const { ctx, page } = await newPage();
 await step("library loads with featured + live catalog", async () => {
   await page.goto(base);
   await page.getByRole("heading", { name: /Pick a game/ }).waitFor();
-  await page.getByRole("heading", { name: "Featured" }).waitFor();
-  await page.getByText("GunSpin", { exact: true }).waitFor();
-  await page.getByText("Retro Bowl", { exact: true }).first().waitFor();
-  await page.getByText("PolyTrack", { exact: true }).first().waitFor();
+  await page.getByRole("heading", { name: "Popular" }).waitFor();
+  await page.getByRole("heading", { name: "Staff picks" }).waitFor();
+  await page.getByText("Moto X3M: Spooky Land", { exact: true }).waitFor();
+  assert((await page.getByText("GunSpin", { exact: true }).count()) === 0, "GunSpin removed");
+  assert((await page.locator('main a[target="_blank"]:not([href^="play.html"])').count()) === 0, "no off-site game links");
   await page.getByText("Turbo Rally 1", { exact: true }).waitFor();
   const imgs = await page.locator("main img").evaluateAll((els) => els.slice(0, 30).map((i) => i.complete && i.naturalWidth > 0));
   assert(imgs.filter(Boolean).length >= 10, `thumbnails loaded: ${imgs.filter(Boolean).length}`);
@@ -105,13 +106,13 @@ await step("infinite scroll loads more pages", async () => {
 await step("game opens in a new tab on this site, in a game window", async () => {
   await page.evaluate(() => window.scrollTo(0, 0));
   const popup = ctx.waitForEvent("page");
-  await page.getByRole("link", { name: /^GunSpin/ }).first().click();
+  await page.getByRole("link", { name: /^Moto X3M: Spooky Land/ }).first().click();
   const p = await popup;
   await p.waitForLoadState();
   assert(new URL(p.url()).pathname.endsWith("/play.html"), p.url());
-  await p.getByText("GunSpin", { exact: true }).first().waitFor();
+  await p.getByText("Moto X3M: Spooky Land", { exact: true }).first().waitFor();
   const src = await p.locator("iframe").getAttribute("src");
-  assert(src === "https://play.gamepix.com/gunspin/embed?sid=1", src);
+  assert(src === "https://play.gamepix.com/moto-x3m-spooky-land/embed?sid=1", src);
   await p.frameLocator("iframe").locator("#game").waitFor();
   await p.waitForTimeout(400);
   await p.screenshot({ path: path.join(shots, "02-player.png") });
@@ -141,19 +142,11 @@ await step("category chips load that category", async () => {
 });
 
 await step("favorites", async () => {
-  await page.getByRole("button", { name: "Add GunSpin to favorites" }).first().click();
+  await page.getByRole("button", { name: "Add Basketball Stars to favorites" }).first().click();
   await page.getByRole("button", { name: /Favorites · 1/ }).click();
   await page.getByRole("heading", { name: "Your favorites" }).waitFor();
-  await page.getByText("GunSpin", { exact: true }).waitFor();
+  await page.getByText("Basketball Stars", { exact: true }).waitFor();
   await page.getByRole("button", { name: "All", exact: true }).click();
-});
-
-await step("official-only games open the official site", async () => {
-  const popup = ctx.waitForEvent("page");
-  await page.getByRole("link", { name: /^Retro Bowl/ }).first().click();
-  const p = await popup;
-  assert(p.url().startsWith("https://poki.com/en/g/retro-bowl"), p.url());
-  await p.close();
 });
 
 await step("player rejects unknown or unsafe games", async () => {
@@ -162,7 +155,7 @@ await step("player rejects unknown or unsafe games", async () => {
   await p.getByRole("heading", { name: "We couldn't find that game" }).waitFor();
   assert((await p.locator("iframe").count()) === 0, "no iframe rendered");
   await p.goto(base + "play.html?g=x:retro-bowl&t=Retro%20Bowl");
-  await p.getByRole("heading", { name: "Retro Bowl plays on Poki" }).waitFor();
+  await p.getByRole("heading", { name: "We couldn't find that game" }).waitFor();
   await p.close();
 });
 
@@ -185,7 +178,7 @@ await step("dark mode + accent persist across pages", async () => {
   await page.waitForTimeout(800);
   await page.screenshot({ path: path.join(shots, "03-library-dark.png") });
   const p = await ctx.newPage();
-  await p.goto(base + "play.html?g=gp:gunspin&t=GunSpin&c=shooter");
+  await p.goto(base + "play.html?g=gp:basketball-stars&t=Basketball%20Stars&c=sports");
   await p.frameLocator("iframe").locator("#game").waitFor();
   assert((await p.evaluate(() => document.documentElement.dataset.mode)) === "dark", "player dark");
   await p.waitForTimeout(300);
@@ -197,10 +190,10 @@ await ctx.close();
 const m = await newPage({ width: 390, height: 844 });
 await step("mobile layout", async () => {
   await m.page.goto(base);
-  await m.page.getByText("GunSpin", { exact: true }).waitFor();
+  await m.page.getByText("Basketball Stars", { exact: true }).first().waitFor();
   await m.page.waitForTimeout(800);
   await m.page.screenshot({ path: path.join(shots, "05-mobile.png") });
-  await m.page.goto(base + "play.html?g=gp:gunspin&t=GunSpin&c=shooter");
+  await m.page.goto(base + "play.html?g=gp:basketball-stars&t=Basketball%20Stars&c=sports");
   await m.page.frameLocator("iframe").locator("#game").waitFor();
   await m.page.screenshot({ path: path.join(shots, "06-mobile-player.png") });
 });

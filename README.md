@@ -19,8 +19,7 @@ To update later, open the site in Netlify → **Deploys** → drag the new `dist
 ## Where the games come from
 
 - **GamePix** publishes a feed of about 16,000 HTML5 games that other sites are allowed to embed ([docs](https://docs.gamepix.com/docs)). The library loads it live, best-rated first, so it stays current with correct thumbnails.
-- **Featured** games are hand-picked from that feed in `src/config.ts` (`FEATURED`). Add any game by its slug, the part after `play.gamepix.com/` or `gamepix.com/play/`.
-- **Retro Bowl** and **PolyTrack** don't allow embedding on other sites, so their tiles open the official pages (Poki and itch.io). Add more of these in `OFFICIAL_ONLY`.
+- **Popular** and **Staff picks** are hand-picked from that feed in `src/config.ts` (`POPULAR`, `PICKS`). Add any game by its slug, the part after `play.gamepix.com/` or `gamepix.com/play/`.
 
 **Your own GamePix ID (recommended):** the site uses GamePix's demo ID `1`. Sign up at https://partners.gamepix.com, then set `GAMEPIX_SID` in `src/config.ts` and rebuild. That ties the games to your site and lets you earn from their ads.
 

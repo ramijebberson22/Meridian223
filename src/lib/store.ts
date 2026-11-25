@@ -75,6 +75,10 @@ const slim = (g: Game): Slim => ({
   height: g.height,
 });
 
+/** Games that no longer work; hidden even if a browser saved them earlier. */
+const REMOVED = new Set(["gp:gunspin"]);
+const playable = (g: Slim) => !REMOVED.has(g.key) && !g.key.startsWith("x:");
+
 export function useFavorites() {
   const [favs, setFavs] = useStored<Slim[]>("favorites", []);
   const isFav = useCallback((key: string) => favs.some((f) => f.key === key), [favs]);
@@ -82,12 +86,12 @@ export function useFavorites() {
     (g: Game) => setFavs((list) => (list.some((f) => f.key === g.key) ? list.filter((f) => f.key !== g.key) : [slim(g), ...list].slice(0, 200))),
     [setFavs],
   );
-  return { favs: favs as Game[], isFav, toggle };
+  return { favs: favs.filter(playable) as Game[], isFav, toggle };
 }
 
 export function useRecent() {
   const [recent, setRecent] = useStored<Slim[]>("recent", []);
   const add = useCallback((g: Game) => setRecent((list) => [slim(g), ...list.filter((r) => r.key !== g.key)].slice(0, 24)), [setRecent]);
   const clear = useCallback(() => setRecent([]), [setRecent]);
-  return { recent: recent as Game[], add, clear };
+  return { recent: recent.filter(playable) as Game[], add, clear };
 }

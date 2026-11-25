@@ -1,8 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { LuArrowUp, LuClock, LuHeart, LuRotateCw, LuSearch, LuSparkles, LuX } from "react-icons/lu";
+import { LuArrowUp, LuClock, LuFlame, LuHeart, LuRotateCw, LuSearch, LuSparkles, LuX } from "react-icons/lu";
 import { CATEGORIES } from "./config";
-import { dedupe, featuredGames, loadPage, officialGames, type Game } from "./lib/catalog";
+import { dedupe, featuredGames, loadPage, officialGames, pickGames, popularGames, type Game } from "./lib/catalog";
 import { useFavorites, usePrefs, useRecent } from "./lib/store";
 import { CardSkeleton, GameCard } from "./components/GameCard";
 import { IconButton, Logo, Pill, ThemeControls, Wordmark } from "./components/ui";
@@ -167,8 +167,13 @@ function Library() {
           </Section>
         )}
         {view === "all" && (
-          <Section title="Featured" icon={<LuSparkles />}>
-            <div className={GRID}>{[...featuredGames.slice(0, 1), ...officialGames, ...featuredGames.slice(1)].map(card)}</div>
+          <Section title="Popular" icon={<LuFlame />}>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-6">{popularGames.map(card)}</div>
+          </Section>
+        )}
+        {view === "all" && (
+          <Section title="Staff picks" icon={<LuSparkles />}>
+            <div className={GRID}>{[...officialGames, ...pickGames].map(card)}</div>
           </Section>
         )}
         <Section title={view === "all" ? "All games" : `${categoryLabel} games`}>
@@ -254,7 +259,7 @@ function Library() {
           <a className="underline hover:text-fg" href="https://www.gamepix.com" target="_blank" rel="noopener noreferrer">
             GamePix
           </a>
-          . Some favorites open on their official sites.
+          .
         </footer>
       </div>
       <BackToTop />

@@ -11,42 +11,55 @@ export const SITE_NAME = "Meridian Arcade";
  */
 export const GAMEPIX_SID = "1";
 
-/** Games shown in the "Featured" row, by GamePix namespace (the slug in play.gamepix.com/<slug>/). */
-export const FEATURED: Array<{ id: string; title: string; category: string }> = [
-  { id: "gunspin", title: "GunSpin", category: "shooter" },
+/**
+ * Well-known games shown in the "Popular" section, by GamePix namespace (the
+ * slug in play.gamepix.com/<slug>/embed). Only use games that are in the live
+ * GamePix feed: games GamePix has pulled (like GunSpin) load an "access denied" page.
+ */
+export const POPULAR: Array<{ id: string; title: string; category: string }> = [
   { id: "moto-x3m-spooky-land", title: "Moto X3M: Spooky Land", category: "racing" },
-  { id: "slope-racing-3d", title: "Slope Racing 3D", category: "ball" },
   { id: "basketball-stars", title: "Basketball Stars", category: "sports" },
+  { id: "fireboy-and-watergirl-online", title: "Fireboy and Watergirl Online", category: "two-player" },
+  { id: "slope-racing-3d", title: "Slope Racing 3D", category: "ball" },
   { id: "worms-zone", title: "Worms Zone", category: "snake" },
+  { id: "football-heads", title: "Football Heads", category: "sports" },
+  { id: "subway-princess-run-1", title: "Subway Princess Run", category: "runner" },
+  { id: "ninja-parkour-multiplayer", title: "Ninja Parkour Multiplayer", category: "parkour" },
+  { id: "master-chess-multiplayer", title: "Master Chess Multiplayer", category: "chess" },
+  { id: "penalty-shooters", title: "Penalty Shooters", category: "sports" },
+  { id: "2048", title: "2048", category: "puzzle" },
+  { id: "snake", title: "Snake", category: "retro" },
+];
+
+/** More hand-picked games, shown under "Staff picks". */
+export const PICKS: Array<{ id: string; title: string; category: string }> = [
   { id: "funny-shooter-2", title: "Funny Shooter 2", category: "shooter" },
   { id: "drift-race-in-the-open-world", title: "Drift Race in the Open World", category: "racing" },
   { id: "golf-orbit", title: "Golf Orbit", category: "golf" },
   { id: "stickman-warriors-1", title: "Stickman Warriors", category: "fighting" },
-  { id: "football-heads", title: "Football Heads", category: "sports" },
   { id: "car-crash-test", title: "Car Crash Test", category: "arcade" },
   { id: "hoops-the-game", title: "HOOPS the Game", category: "basketball" },
   { id: "ragdoll-mega-dunk", title: "Ragdoll Mega Dunk", category: "sports" },
   { id: "war-of-tanks-3d", title: "War of Tanks 3D", category: "tanks" },
-  { id: "ninja-parkour-multiplayer", title: "Ninja Parkour Multiplayer", category: "parkour" },
   { id: "motocross-racing", title: "Motocross Racing", category: "racing" },
   { id: "geometry-gunner", title: "Geometry Gunner", category: "arcade" },
-  { id: "penalty-shooters", title: "Penalty Shooters", category: "sports" },
   { id: "boxing-stars", title: "Boxing Stars", category: "sports" },
   { id: "endless-car-chase", title: "Endless Car Chase", category: "racing" },
   { id: "fractal-combat-x", title: "Fractal Combat X", category: "shooter" },
   { id: "warfare-1942-online-shooter", title: "Warfare 1942 - Online Shooter", category: "shooter" },
   { id: "superbike-hero", title: "Superbike Hero", category: "racing" },
-  { id: "2048", title: "2048", category: "puzzle" },
+  { id: "retro-speed", title: "Retro Speed", category: "racing" },
+  { id: "extreme-drift-racing", title: "Extreme Drift Racing", category: "racing" },
+  { id: "brick-breaker-retro", title: "Brick Breaker Retro", category: "arcade" },
+  { id: "train-drift", title: "Train Drift", category: "racing" },
+  { id: "basket-champs", title: "Basket Champs", category: "sports" },
 ];
 
 /**
- * Popular games whose owners don't allow embedding on other sites.
- * Their tiles open the official site in a new tab instead.
+ * Games that can't be embedded and would open another site. Left empty on
+ * purpose: everything on this site plays embedded.
  */
-export const OFFICIAL_ONLY: Array<{ id: string; title: string; url: string; site: string; category: string; colors: [string, string] }> = [
-  { id: "retro-bowl", title: "Retro Bowl", url: "https://poki.com/en/g/retro-bowl", site: "Poki", category: "sports", colors: ["#1d4ed8", "#f59e0b"] },
-  { id: "polytrack", title: "PolyTrack", url: "https://kodub.itch.io/polytrack", site: "itch.io", category: "racing", colors: ["#0f766e", "#a3e635"] },
-];
+export const OFFICIAL_ONLY: Array<{ id: string; title: string; url: string; site: string; category: string; colors: [string, string] }> = [];
 
 /** Category chips: label -> GamePix category namespaces it combines. */
 export const CATEGORIES: Array<{ id: string; label: string; tags: string[] }> = [

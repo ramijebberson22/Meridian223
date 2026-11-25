@@ -3,7 +3,7 @@
  * which is meant for other sites to embed games. Loaded live, sorted by
  * GamePix's quality score, cached for the browser session.
  */
-import { CATEGORIES, FEATURED, GAMEPIX_SID, OFFICIAL_ONLY } from "../config";
+import { CATEGORIES, GAMEPIX_SID, OFFICIAL_ONLY, PICKS, POPULAR } from "../config";
 
 export interface Game {
   key: string; // "gp:<namespace>" or "x:<id>"
@@ -47,12 +47,16 @@ function fromFeed(i: FeedItem): Game | null {
   };
 }
 
-export const featuredGames: Game[] = FEATURED.map((f) => ({
+const fromConfig = (f: { id: string; title: string; category: string }): Game => ({
   key: `gp:${f.id}`,
   title: f.title,
   category: f.category,
   thumb: gamepixThumb(f.id),
-}));
+});
+export const popularGames: Game[] = POPULAR.map(fromConfig);
+export const pickGames: Game[] = PICKS.map(fromConfig);
+/** Every hand-picked game. */
+export const featuredGames: Game[] = [...popularGames, ...pickGames];
 
 export const officialGames: Game[] = OFFICIAL_ONLY.map((o) => ({
   key: `x:${o.id}`,
